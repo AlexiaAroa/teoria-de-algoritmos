@@ -13,15 +13,16 @@ VALOR = 2
 # Ecuación de recurrencia
 # OPT(charla_i) = max(OPT(charla_(i-1)), ganancia_i + OPT(charla[p[i]]))
 
-# Primero, ordenamos por horario de fin
+# --------------------- TOP DOWN ---------------------
 def scheduling_con_pesos(charlas):
     charlas = ordenar_por_horario_de_fin(charlas)
     P = calcular_arreglo_de_no_intersecciones(charlas)
     SCHE = [None] * len(charlas)
-    return _scheduling_con_pesos(charlas, SCHE, P)
+    nro_charla = 0 # cambiar
+    return _scheduling_con_pesos(charlas, SCHE, P, nro_charla)
 
 def _scheduling_con_pesos(charlas, SCHE, P, j):
-    if len(charlas) == 0:
+    if len(charlas) == 0 or j == 0:
         return 0
     
     if SCHE[j - 1] == None:
@@ -31,6 +32,21 @@ def _scheduling_con_pesos(charlas, SCHE, P, j):
         SCHE[P[j]] = _scheduling_con_pesos(charlas, SCHE, P, P[j])
 
     return max(SCHE[j - 1], SCHE[P[j]] + charlas[j][VALOR])
+
+# --------------------- BOTTOM UP ---------------------
+def scheduling_con_pesos_iter(charlas, nro_charla):
+    if len(charlas) == 0:
+        return 0
+    
+    charlas = ordenar_por_horario_de_fin(charlas)
+    P = calcular_arreglo_de_no_intersecciones(charlas)
+    SCHE = [None] * (len(charlas) + 1)
+    SCHE[0] = 0
+
+    for j in range(1, len(charlas) + 1):
+        SCHE[j] = max(SCHE[j - 1], SCHE[P[j]] + charlas[j][VALOR])
+
+    return SCHE[nro_charla]
 
 def calcular_arreglo_de_no_intersecciones(charlas):
     P = [0] * len(charlas)
