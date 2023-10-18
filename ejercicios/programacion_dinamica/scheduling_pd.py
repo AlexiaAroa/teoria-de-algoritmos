@@ -14,14 +14,23 @@ VALOR = 2
 # OPT(charla_i) = max(OPT(charla_(i-1)), ganancia_i + OPT(charla[p[i]]))
 
 # Primero, ordenamos por horario de fin
-
-
-# TERMINAR
 def scheduling_con_pesos(charlas):
+    charlas = ordenar_por_horario_de_fin(charlas)
+    P = calcular_arreglo_de_no_intersecciones(charlas)
+    SCHE = [None] * len(charlas)
+    return _scheduling_con_pesos(charlas, SCHE, P)
+
+def _scheduling_con_pesos(charlas, SCHE, P, j):
     if len(charlas) == 0:
         return 0
     
-    charlas = ordenar_por_horario_de_fin(charlas)
+    if SCHE[j - 1] == None:
+        SCHE[j - 1] = _scheduling_con_pesos(charlas, SCHE, P, j)
+
+    if SCHE[P[j]] == None:
+        SCHE[P[j]] = _scheduling_con_pesos(charlas, SCHE, P, P[j])
+
+    return max(SCHE[j - 1], SCHE[P[j]] + charlas[j][VALOR])
 
 def calcular_arreglo_de_no_intersecciones(charlas):
     P = [0] * len(charlas)
