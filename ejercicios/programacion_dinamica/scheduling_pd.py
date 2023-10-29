@@ -48,6 +48,23 @@ def scheduling_con_pesos_iter(charlas, nro_charla):
 
     return SCHE[nro_charla]
 
+
+# ----------------- RECUPERAR SOLUCION -----------------
+# Params: charlas, arreglo de no intersecciones, j (nro de charla), arreglo de soluciones optimas, conjunto de soluciones 
+def scheduling_solucion(charlas, p, nro_charla, SCHE, solucion):
+    if nro_charla == 0:
+        return solucion
+
+    if SCHE[p[nro_charla]] + charlas[nro_charla][VALOR] >= SCHE[nro_charla-1]:
+        solucion.add(charlas[nro_charla])
+        return scheduling_solucion(charlas, p, p[nro_charla], SCHE, solucion)
+    
+    return scheduling_solucion(charlas, p, nro_charla-1, SCHE, solucion)
+
+
+# --------------------- AUXILIARES ---------------------
+# No lo probé, no se si está del todo bien :P
+
 def calcular_arreglo_de_no_intersecciones(charlas):
     P = [0] * len(charlas)
     for i in range(len(charlas)):
