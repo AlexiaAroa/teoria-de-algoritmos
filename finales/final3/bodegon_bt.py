@@ -25,7 +25,7 @@ def bodegon(P, w_lugares):
     _bodegon(P, w_lugares, 0, solucion, [])
     return solucion[0]
 
-res = bodegon([1, 3, 4, 5], 10)
+res = bodegon([1, 3, 4, 5], 11)
 print(f"Grupos con valores: {res} ocupan {sum(res)} lugares")
 
 

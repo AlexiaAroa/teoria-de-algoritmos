@@ -81,7 +81,33 @@ def _minimo_vertex_cover_v3(grafo, vertices, i_act, solucion_actual):
 def minimo_vertex_cover_v3(grafo):
     return _minimo_vertex_cover_v3(grafo, grafo.obtener_vertices(), 0, [])
 
+# Version 4 ------------------------------------------------------------------
+
+def _minimo_vertex_cover_v4(grafo, vertices, i_act, solucion_actual, solucion_minima):
+    if cubre_todas_las_aristas(grafo, solucion_actual):
+        if len(solucion_minima[0]) == 0 or len(solucion_actual) < len(solucion_minima[0]):
+            solucion_minima[0] = solucion_actual[:]
+            return
+        
+    # Poda, si mi solucion es mas larga que la minima, corto
+    if len(solucion_minima[0]) != 0 and len(solucion_actual) > len(solucion_minima[0]):
+        return
+        
+    if i_act >= len(vertices):
+        return
+    
+    vertice_actual = vertices[i_act]
+    solucion_actual.append(vertice_actual)
+    _minimo_vertex_cover_v4(grafo, vertices, i_act + 1, solucion_actual, solucion_minima)
+    solucion_actual.pop()
+    _minimo_vertex_cover_v4(grafo, vertices, i_act + 1, solucion_actual, solucion_minima)
+
+def minimo_vertex_cover_v4(grafo):
+    solucion = [[]]
+    _minimo_vertex_cover_v4(grafo, grafo.obtener_vertices(), 0, [], solucion)
+    return solucion[0]
 # ------------------------------------------------------------------------
+
 grafo_lista_enlazada = Grafo()
 grafo_lista_enlazada.agregar_vertice("A")
 grafo_lista_enlazada.agregar_vertice("B")
@@ -94,3 +120,5 @@ grafo_lista_enlazada.agregar_arista("C", "D")
 print(minimo_vertex_cover(grafo_lista_enlazada))
 print(minimo_vertex_cover_v2(grafo_lista_enlazada))
 print(minimo_vertex_cover_v3(grafo_lista_enlazada))
+print(minimo_vertex_cover_v4(grafo_lista_enlazada))
+

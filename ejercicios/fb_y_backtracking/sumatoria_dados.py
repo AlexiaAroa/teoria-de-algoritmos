@@ -32,6 +32,8 @@ def suma_dados_v2(cantidad_dados, suma, solucion, solucion_parcial):
     if len(solucion_parcial) == cantidad_dados and sum(solucion_parcial) != suma:
         return
 
+    # Aca no pasa nada que empiece de nuevo en 1, porque si yo tiro el dado de nuevo
+    # me puede salir de nuevo un 1. En subset sum pasa otra cosa. 
     for i in range(1, 7):
         solucion_parcial.append(i)
         suma_dados_v2(cantidad_dados, suma, solucion, solucion_parcial)
